@@ -1,7 +1,7 @@
 package com.ahmet.services;
+
 import com.ahmet.data.StudentRecord;
 import com.ahmet.model.Student;
-
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -309,5 +309,151 @@ public class StudentServiceTest {
         assertTrue(avg.containsKey("Female"));
         assertEquals(22.9, avg.get("Male"), 0.1);
         assertEquals(22.1, avg.get("Female"), 0.1);
+    }
+
+    @Test
+    public void testGroupStudentsByGenderAndCity() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByGenderAndCity(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Male")));
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Female")));
+    }
+
+    @Test
+    public void testFilterStudentsByCityAndRank() {
+        List<Student> filtered = studentService.filterStudentsByCityAndRank(students, "London", 200);
+        assertTrue(filtered.stream().allMatch(s -> s.getCity().equals("London") && s.getRank() >= 200));
+    }
+
+    @Test
+    public void testCountStudentsByGenderAndCity() {
+        Map<String, Long> counts = studentService.countStudentsByGenderAndCity(students);
+        assertTrue(counts.keySet().stream().anyMatch(k -> k.contains("Male")));
+        assertTrue(counts.values().stream().anyMatch(v -> v > 0));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndRank() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndRank(students);
+        assertTrue(grouped.containsKey("London"));
+    }
+
+    @Test
+    public void testGroupStudentsByDepartmentAndCity() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByDepartmentAndCity(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Computer Science")));
+    }
+
+    @Test
+    public void testCountStudentsByCityAndDepartment() {
+        Map<String, Long> counts = studentService.countStudentsByCityAndDepartment(students);
+        assertTrue(counts.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByAgeAndGender() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByAgeAndGender(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Male")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndGender() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndGender(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByDepartmentAndGender() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByDepartmentAndGender(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Computer Science")));
+    }
+
+    @Test
+    public void testGroupStudentsByRankAndCity() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByRankAndCity(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("101-500")));
+    }
+
+    @Test
+    public void testGroupStudentsByRankAndDepartment() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByRankAndDepartment(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("101-500")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndAge() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndAge(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByGenderAndRank() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByGenderAndRank(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Male")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndAgeRange() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndAgeRange(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByDepartmentAndAge() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByDepartmentAndAge(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Computer Science")));
+    }
+
+    @Test
+    public void testGroupStudentsByGenderAndAge() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByGenderAndAge(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Male")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndGenderAndRank() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndGenderAndRank(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByDepartmentAndGenderAndCity() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByDepartmentAndGenderAndCity(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Computer Science")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndDepartmentAndRank() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndDepartmentAndRank(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndDepartmentAndAge() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndDepartmentAndAge(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndGenderAndAge() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndGenderAndAge(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
+    }
+
+    @Test
+    public void testGroupStudentsByDepartmentAndGenderAndRank() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByDepartmentAndGenderAndRank(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Computer Science")));
+    }
+
+    @Test
+    public void testGroupStudentsByDepartmentAndCityAndRank() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByDepartmentAndCityAndRank(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("Computer Science")));
+    }
+
+    @Test
+    public void testGroupStudentsByCityAndRankAndAge() {
+        Map<String, List<Student>> grouped = studentService.groupStudentsByCityAndRankAndAge(students);
+        assertTrue(grouped.keySet().stream().anyMatch(k -> k.contains("London")));
     }
 }
