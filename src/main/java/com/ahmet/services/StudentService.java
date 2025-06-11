@@ -3,7 +3,6 @@ package com.ahmet.services;
 import com.ahmet.model.Student;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.*;
 
 public class StudentService {
@@ -121,9 +120,12 @@ public class StudentService {
 
     public Map<String, List<Student>> groupStudentsByRankRange(List<Student> students) {
         return students.stream().collect(Collectors.groupingBy(s -> {
-            if (s.getRank() <= 100) return "1-100";
-            else if (s.getRank() <= 500) return "101-500";
-            else return "501+";
+            if (s.getRank() <= 100)
+                return "1-100";
+            else if (s.getRank() <= 500)
+                return "101-500";
+            else
+                return "501+";
         }));
     }
 
@@ -134,7 +136,8 @@ public class StudentService {
     public Map<String, Long> countDistinctDepartmentsByCity(List<Student> students) {
         return students.stream()
                 .collect(Collectors.groupingBy(Student::getCity,
-                        Collectors.mapping(Student::getDepartment, Collectors.collectingAndThen(Collectors.toSet(), Set::size))))
+                        Collectors.mapping(Student::getDepartment,
+                                Collectors.collectingAndThen(Collectors.toSet(), Set::size))))
                 .entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> (long) e.getValue()));
     }
@@ -204,9 +207,12 @@ public class StudentService {
 
     public Map<String, List<Student>> groupStudentsByAgeRange(List<Student> students) {
         return students.stream().collect(Collectors.groupingBy(s -> {
-            if (s.getAge() < 22) return "Under 22";
-            else if (s.getAge() <= 24) return "22-24";
-            else return "25+";
+            if (s.getAge() < 22)
+                return "Under 22";
+            else if (s.getAge() <= 24)
+                return "22-24";
+            else
+                return "25+";
         }));
     }
 
@@ -230,5 +236,143 @@ public class StudentService {
         return students.stream()
                 .collect(Collectors.groupingBy(Student::getGender,
                         Collectors.averagingInt(Student::getAge)));
+    }
+
+    public Map<String, List<Student>> groupStudentsByGenderAndCity(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getGender() + " - " + s.getCity()));
+    }
+
+    public List<Student> filterStudentsByCityAndRank(List<Student> students, String city, int minRank) {
+        return students.stream()
+                .filter(s -> s.getCity().equals(city) && s.getRank() >= minRank)
+                .collect(Collectors.toList());
+    }
+
+    public Map<String, Long> countStudentsByGenderAndCity(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getGender() + " - " + s.getCity(), Collectors.counting()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndRank(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(
+                        Student::getCity,
+                        Collectors.toList()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByDepartmentAndCity(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getDepartment() + " - " + s.getCity()));
+    }
+
+    public Map<String, Long> countStudentsByCityAndDepartment(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - " + s.getDepartment(), Collectors.counting()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByAgeAndGender(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getAge() + " - " + s.getGender()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndGender(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - " + s.getGender()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByDepartmentAndGender(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getDepartment() + " - " + s.getGender()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByRankAndCity(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(
+                        s -> s.getRank() <= 100 ? "1-100" : s.getRank() <= 500 ? "101-500" : "501+ - " + s.getCity()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByRankAndDepartment(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getRank() <= 100 ? "1-100"
+                        : s.getRank() <= 500 ? "101-500" : "501+ - " + s.getDepartment()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndAge(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - "
+                        + (s.getAge() < 22 ? "Under 22" : s.getAge() <= 24 ? "22-24" : "25+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByGenderAndRank(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getGender() + " - "
+                        + (s.getRank() <= 100 ? "1-100" : s.getRank() <= 500 ? "101-500" : "501+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndAgeRange(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - "
+                        + (s.getAge() < 22 ? "Under 22" : s.getAge() <= 24 ? "22-24" : "25+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByDepartmentAndAge(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getDepartment() + " - "
+                        + (s.getAge() < 22 ? "Under 22" : s.getAge() <= 24 ? "22-24" : "25+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByGenderAndAge(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getGender() + " - "
+                        + (s.getAge() < 22 ? "Under 22" : s.getAge() <= 24 ? "22-24" : "25+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndGenderAndRank(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - " + s.getGender() + " - "
+                        + (s.getRank() <= 100 ? "1-100" : s.getRank() <= 500 ? "101-500" : "501+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByDepartmentAndGenderAndCity(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getDepartment() + " - " + s.getGender() + " - " + s.getCity()));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndDepartmentAndRank(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - " + s.getDepartment() + " - "
+                        + (s.getRank() <= 100 ? "1-100" : s.getRank() <= 500 ? "101-500" : "501+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndDepartmentAndAge(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - " + s.getDepartment() + " - "
+                        + (s.getAge() < 22 ? "Under 22" : s.getAge() <= 24 ? "22-24" : "25+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndGenderAndAge(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - " + s.getGender() + " - "
+                        + (s.getAge() < 22 ? "Under 22" : s.getAge() <= 24 ? "22-24" : "25+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByDepartmentAndGenderAndRank(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getDepartment() + " - " + s.getGender() + " - "
+                        + (s.getRank() <= 100 ? "1-100" : s.getRank() <= 500 ? "101-500" : "501+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByDepartmentAndCityAndRank(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getDepartment() + " - " + s.getCity() + " - "
+                        + (s.getRank() <= 100 ? "1-100" : s.getRank() <= 500 ? "101-500" : "501+")));
+    }
+
+    public Map<String, List<Student>> groupStudentsByCityAndRankAndAge(List<Student> students) {
+        return students.stream()
+                .collect(Collectors.groupingBy(s -> s.getCity() + " - "
+                        + (s.getRank() <= 100 ? "1-100" : s.getRank() <= 500 ? "101-500" : "501+") + " - "
+                        + (s.getAge() < 22 ? "Under 22" : s.getAge() <= 24 ? "22-24" : "25+")));
     }
 }
